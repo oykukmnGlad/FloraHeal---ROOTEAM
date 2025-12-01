@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FloraHeal - Ana Sayfa</title>
+    <link rel="icon" type="image/png" href="image/favicon.png">
+    <link rel="stylesheet" href="indexstyle.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <div class="logo">🌱 FloraHeal</div>
+        <div class="nav-links">
+            <a href="#">Ana Sayfa</a>
+            <a href="#">Bitkilerim</a>
+
+            <i class="fas fa-moon" onclick="toggleTheme()"
+                style="cursor:pointer; color:white; margin-right: 15px; margin-left:15px;" title="Modu Değiştir"></i>
+
+            <a href="login.html" style="color: #ffcccc;">Çıkış Yap</a>
+        </div>
+    </nav>
+
+    <div class="main-container">
+
+        <main class="plant-gallery-section">
+            <h2>Bahçem</h2>
+            <input type="text" id="searchInput" placeholder="Bitki ara..." onkeyup="filterPlants()">
+            <div id="plantGallery" class="gallery-grid">
+                <div class="empty-message" id="emptyMsg">Henüz hiç bitkiniz yok. Sağdaki panelden ekleyin! 🌿</div>
+            </div>
+        </main>
+
+        <aside class="sidebar">
+            <div class="profile-card">
+
+                <img id="profileImage" src="https://cdn-icons-png.flaticon.com/512/1144/1144760.png" class="avatar-img"
+                    alt="Profil">
+
+                <h3 id="profileName">Rooteam Üyesi</h3>
+
+            </div>
+            <h3 id="profileName">FloraHeal Üyesi</h3>
+            <div class="stats">
+            </div>
+    </div>
+
+    <div class="control-panel">
+        <h3>İşlemler</h3>
+        <button onclick="addPlant()" class="btn-add"><i class="fas fa-plus"></i> Bitki Ekle</button>
+        <button onclick="removePlant()" class="btn-remove"><i class="fas fa-trash"></i> Son Bitkiyi Sil</button>
+    </div>
+    </aside>
+
+    </div>
+
+    <section class="forum-section">
+        <h2>📢 Topluluk Forumu</h2>
+        <div class="forum-topics">
+            <div class="topic">
+                <h4>Orkide Bakımı Nasıl Yapılır?</h4>
+                <p>Orkidem yaprak döküyor, ne yapmalıyım? - <span>@ahmet</span></p>
+            </div>
+            <div class="topic">
+                <h4>Yazılım Projesi İçin Öneriler</h4>
+                <p>FloraHeal için yeni fikirleriniz var mı? - <span>@rooteam</span></p>
+            </div>
+            <div class="topic">
+                <h4>Ofis Bitkileri</h4>
+                <p>Güneş almayan odaya hangi bitki gider? - <span>@esma</span></p>
+            </div>
+        </div>
+    </section>
+
+    <script src="indexscript.js"></script>
+
+</body>
+
+</html>

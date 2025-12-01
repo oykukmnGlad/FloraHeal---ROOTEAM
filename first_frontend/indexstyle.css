@@ -1,0 +1,280 @@
+/* GENEL AYARLAR */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f9f4; /* FloraHeal Yeşili Tonu */
+    color: #333;
+}
+
+/* NAVBAR */
+.navbar {
+    background-color: #2E7D32;
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    margin-left: 20px;
+    font-size: 14px;
+}
+
+/* ANA YERLEŞİM (SOL VE SAĞ) */
+.main-container {
+    display: flex; /* Yan yana dizme özelliği */
+    max-width: 1200px;
+    margin: 30px auto;
+    gap: 20px;
+    padding: 0 20px;
+    min-height: 50vh; /* Sayfa boşken bile belli bir yükseklik olsun */
+}
+
+/* SOL TARA: GALERİ */
+.plant-gallery-section {
+    flex: 3; /* Ekranın 4'te 3'ünü kapla */
+    background-color: white;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+}
+
+.gallery-grid {
+    display: flex;
+    flex-wrap: wrap; /* Sığmayan resim alt satıra geçsin */
+    gap: 15px;
+    margin-top: 20px;
+}
+
+/* Dinamik eklenecek resimlerin stili */
+.plant-img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 10px;
+    border: 3px solid #e8f5e9;
+    transition: transform 0.2s;
+    animation: popIn 0.3s ease-out; /* Eklendiğinde zıplama efekti */
+}
+
+.plant-img:hover {
+    transform: scale(1.05);
+    border-color: #2E7D32;
+}
+
+/* Animasyon */
+@keyframes popIn {
+    0% { transform: scale(0); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+.empty-message {
+    color: #888;
+    width: 100%;
+    text-align: center;
+    margin-top: 50px;
+}
+
+/* SAĞ TARA: SIDEBAR (PROFİL) */
+.sidebar {
+    flex: 1; /* Ekranın 4'te 1'ini kapla */
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.profile-card, .control-panel {
+    background-color: white;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    text-align: center;
+}
+
+/* PROFİL RESMİ STİLİ */
+.avatar-img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%; /* Tam yuvarlak yapar */
+    object-fit: cover; /* Resmi sıkıştırmadan kırpar */
+    border: 3px solid #2E7D32; /* Yeşil çerçeve */
+    margin-bottom: 15px;
+    background-color: white;
+}
+
+.stats {
+    margin-top: 15px;
+    display: flex;
+    justify-content: space-around;
+    font-size: 12px;
+    color: #666;
+}
+
+/* BUTONLAR */
+.btn-add {
+    background-color: #2E7D32;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    width: 100%;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-bottom: 10px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.btn-add:hover { background-color: #1B5E20; }
+
+.btn-remove {
+    background-color: #e53935;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    width: 100%;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.btn-remove:hover { background-color: #b71c1c; }
+
+/* ALT KISIM: FORUM */
+.forum-section {
+    max-width: 1200px;
+    margin: 30px auto;
+    padding: 20px;
+    background-color: #263238; /* Koyu renk forum alanı */
+    color: white;
+    border-radius: 15px;
+}
+
+.forum-topics {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.topic {
+    background-color: rgba(255,255,255,0.1);
+    padding: 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.topic:hover {
+    background-color: rgba(255,255,255,0.2);
+}
+
+.topic h4 { margin: 0 0 10px; color: #81c784; }
+.topic p { font-size: 13px; color: #cfd8dc; margin: 0; }
+/* Yeni Bitki Kartı Stili */
+.plant-card {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    width: 150px;
+    overflow: hidden;
+    text-align: center;
+    padding-bottom: 10px;
+    transition: transform 0.2s;
+}
+.plant-card:hover { transform: translateY(-5px); }
+.card-img { width: 100%; height: 120px; object-fit: cover; }
+.card-info h4 { margin: 10px 0 5px; font-size: 14px; }
+.card-info button {
+    background-color: #2E7D32; color: white; border: none;
+    padding: 5px 10px; border-radius: 5px; cursor: pointer; font-size: 12px;
+}
+/* Dark Mode Stilleri */
+.dark-mode {
+    background-color: #1a1a1a;
+    color: #e0e0e0;
+}
+
+/* Koyu modda kutuların rengi de koyulaşmalı */
+.dark-mode .plant-gallery-section, 
+.dark-mode .sidebar .profile-card,
+.dark-mode .control-panel,
+.dark-mode .plant-card {
+    background-color: #2d2d2d;
+    color: white;
+    box-shadow: 0 5px 15px rgba(255,255,255,0.05); /* Gölgeyi hafif beyaz yapalım */
+}
+
+/* Navbar rengini değiştirelim */
+.dark-mode .navbar {
+    background-color: #1b5e20; 
+}
+
+/* KART İÇİ DÜZENLEMELER */
+
+/* Durum yazılarını biraz küçültelim ve sıkıştıralım */
+.status-row p {
+    margin: 5px 0;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+/* Butonları yan yana koymak için grup kutusu */
+.btn-group {
+    display: flex;
+    justify-content: center;
+    gap: 10px; /* Butonlar arası boşluk */
+    margin-top: 10px;
+}
+
+/* Ortak Buton Özellikleri */
+.btn-water, .btn-fert {
+    border: none;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: background-color 0.2s;
+}
+
+/* Sula Butonu Rengi (Mavi) */
+.btn-water {
+    background-color: #2196F3;
+}
+.btn-water:hover {
+    background-color: #1976D2;
+}
+
+/* Gübrele Butonu Rengi (Turuncu/Kahve) */
+.btn-fert {
+    background-color: #FF9800;
+}
+.btn-fert:hover {
+    background-color: #F57C00;
+}
+/* UNDO BUTONU STİLİ */
+/* Buton "Geri Al" moduna geçtiğinde bu sınıf devreye girer */
+.btn-undo {
+    background-color: #9e9e9e !important; /* Gri renk */
+    color: white;
+}
+
+.btn-undo:hover {
+    background-color: #757575 !important; /* Koyu gri */
+}
