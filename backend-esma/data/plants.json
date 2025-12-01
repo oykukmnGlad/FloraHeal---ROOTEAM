@@ -1,0 +1,392 @@
+[
+  {
+    "slug": "aloe-vera",
+    "names": { "tr": ["Aloe vera"], "en": "Aloe vera" },
+    "Id": "728",
+    "image": "https://www.pexels.com/photo/potted-aloe-vera-in-the-garden-12349149/",
+    "scientific_name": "Aloe vera",
+    "care": {
+      "watering": "Toprak tamamen kurumadan sulayın; kışın çok seyrek sulanır.",
+      "sunlight": "Parlak dolaylı ışık idealdir.",
+      "pruning": "Sararan yaprakları dipten kesin."
+    }
+  },
+  { 
+    "slug": "english-ivy",
+    "names": { "tr": ["Sarmaşık"], "en": "English Ivy" },
+    "Id": "3349",
+    "image": "https://www.pexels.com/photo/a-green-plant-on-metal-bucket-8894118/",
+    "scientific_name": "Hedera helix",
+    "care": {
+      "watering": "Toprak hafif nemli kalacak şekilde sulayın.",
+      "sunlight": "Aydınlık ama direkt güneş almayan ortam.",
+      "pruning": "Sarkan dalları kısaltarak şekil verin."
+    }
+  },
+  {
+    "id": "",
+    "slug": "geranium",
+    "names": { "tr": ["Sardunya"], "en": "Geranium" },
+    "Id": "3122",
+    "image": "https://images.unsplash.com/photo-1623852785968-a05289f4fe2c?w=1000&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8Z2VyYW5pdW0lMjBwbGFudHxlbnwwfHwwfHx8MA%3D%3D",
+    "scientific_name": "Geranium albanum 'Pink and Stripes'",
+    "care": {
+      "watering": "Toprak kuruyunca sulayın.",
+      "sunlight": "Günde 4–6 saat güneş ister.",
+      "pruning": "Solan çiçekleri kesin."
+    }
+  },
+  {
+  
+    "slug": "mint",
+    "names": { "tr": ["Nane"], "en": "Mint" },
+    "Id": "5191",
+    "image": "https://www.pexels.com/photo/spearmint-plant-in-clear-glass-vase-on-glass-table-4750375/",
+    "scientific_name": "Mentha piperita f. citrata",
+    "care": {
+      "watering": "Toprak hafif nemli kalsın.",
+      "sunlight": "4–6 saat güneş idealdir.",
+      "pruning": "Sık uç alma yapın."
+    }
+  },
+  {
+    
+    "slug": "rosemary",
+    "names": { "tr": ["Biberiye"], "en": "Rosemary" },
+    "Id": "7110",
+    "image": "https://images.unsplash.com/photo-1515586000433-45406d8e6662?w=1000&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8cm9zZW1hcnklMjBwbGFudHxlbnwwfHwwfHx8MA%3D%3D",
+    "scientific_name": "Salvia rosmarinus 'Arp'",
+    "care": {
+      "watering": "Toprak kurudukça sulayın.",
+      "sunlight": "6+ saat direkt güneş sever.",
+      "pruning": "Odunsu dalları hafifçe budayın."
+    }
+  },
+  {
+    
+    "slug": "lavender",
+    "names": { "tr": ["Lavanta"], "en": "Lavender" },
+    "Id": "4702",
+    "image": "https://www.pexels.com/photo/plant-pot-with-lavender-against-a-purple-wall-12652587/",
+    "scientific_name": "Lavandula angustifolia",
+    "care": {
+      "watering": "Toprak tamamen kuruyunca sulayın.",
+      "sunlight": "Günde 6–8 saat güneş.",
+      "pruning": "Solan çiçekleri kesin."
+    }
+  },
+  {
+    
+    "slug": "succulent",
+    "names": { "tr": ["Sukulent"], "en": "Succulent" },
+    "Id": "1",
+    "image": "https://www.pexels.com/photo/top-view-photo-of-succulent-plant-on-blue-pot-1903975/",
+    "scientific_name": "",
+    "care": {
+      "watering": "Toprak tamamen kuruduktan sonra az miktar su.",
+      "sunlight": "Parlak ışık sever.",
+      "pruning": "Çürüyen yaprakları alın."
+    }
+  },
+  {
+    
+    "slug": "snake-plant",
+    "names": { "tr": ["Paşa kılıcı", "Kılıç çiçeği"], "en": "Snake Plant" },
+    "Id": "7168",
+    "image": "https://www.pexels.com/photo/photo-of-green-snake-house-plant-2123482/",
+    "scientific_name": "Sansevieria patens",
+    "care": {
+      "watering": "Toprak tam kuruyunca sulayın.",
+      "sunlight": "Az ışığa dayanır, dolaylı ışıkta iyi gelişir.",
+      "pruning": "Çürüyen yaprakları dipten kesin."
+    }
+  },
+  {
+    
+    "slug": "orchid",
+    "names": { "tr": ["Orkide"], "en": "Orchid" },
+    "Id": "2354",
+    "image": "https://www.pexels.com/photo/elegant-white-orchid-flowers-against-soft-background-31874234/",
+    "scientific_name": "Dendrobium",
+    "care": {
+      "watering": "Haftada 1 sulama; kökler gri olduğunda su verilir.",
+      "sunlight": "Parlak ama direkt olmayan ışık.",
+      "pruning": "Çiçek sapı kuruyunca kesin."
+    }
+  },
+  {
+    
+    "slug": "african-violet",
+    "names": { "tr": ["Menekşe"], "en": "African Violet" },
+    "Id": "7030",
+    "image": "https://plus.unsplash.com/premium_photo-1678912442416-1653bba76ddd?w=1000&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8YWZyaWNhbiUyMHZpb2xldHxlbnwwfHwwfHx8MA%3D%3D",
+    "scientific_name": "Saintpaulia ionantha",
+    "care": {
+      "watering": "Toprak hafif nemli kalmalı; yapraklara su değdirmeyin.",
+      "sunlight": "Dolaylı parlak ışık.",
+      "pruning": "Sarı ve solmuş yaprakları koparın."
+    }
+  },
+  {
+    
+    "slug": "cactus",
+    "names": { "tr": ["Kaktüs"], "en": "Cactus" },
+    "Id": "5809",
+    "image": "https://www.pexels.com/photo/colorful-ceramic-pot-with-cactus-on-pink-wall-28787264/",
+    "scientific_name": "Pereskia grandifolia",
+    "care": {
+      "watering": "Yazın toprak kuruyunca, kışın çok nadir sulayın.",
+      "sunlight": "Bol güneş ister.",
+      "pruning": "Budama gerektirmez."
+    }
+  },
+  {
+    
+    "slug": "boston-fern",
+    "names": { "tr": ["Aşk merdiveni"], "en": "Boston Fern" },
+    "Id": "5465",
+    "image": "https://www.pexels.com/photo/sword-fern-plant-on-pots-3854761/",
+    "scientific_name": "Nephrolepis exaltata",
+    "care": {
+      "watering": "Toprağı sürekli hafif nemli tut.",
+      "sunlight": "Dolaylı aydınlık ışık.",
+      "pruning": "Kurumuş yaprakları dipten kes."
+    }
+  },
+  {
+    
+    "slug": "begonia",
+    "names": { "tr": ["Begonya"], "en": "Begonia" },
+    "Id": "1196",
+    "image": "https://www.pexels.com/photo/a-bouquet-of-begonia-flowers-5706802/",
+    "scientific_name": "Begonia 'Bepared' DRAGON WING RED",
+    "care": {
+      "watering": "Toprağın üst yüzeyi kuruyunca sulayın.",
+      "sunlight": "Dolaylı parlak ışık.",
+      "pruning": "Solan çiçekleri kesin."
+    }
+  },
+  {
+    
+    
+    "names": { "tr": ["Barış çiçeği"], "en": "Peace Lily" },
+    "Id": "7463",
+    "image": "https://www.pexels.com/photo/green-plants-in-brown-clay-pots-9731992/",
+    "scientific_name": "",
+    "care": {
+      "watering": "Toprak hafif nemli kalmalı; yapraklar sarkınca su verin.",
+      "sunlight": "Aydınlık gölge.",
+      "pruning": "Solmuş çiçekleri dipten alın."
+    }
+  },
+  {
+    
+    "slug": "lucky-bamboo",
+    "names": { "tr": ["Bambu"], "en": "Lucky Bamboo" },
+    "Id": "2",
+    "image": "https://www.pexels.com/photo/artistic-bamboo-in-glass-vase-with-sunset-shadow-30384226/",
+    "scientific_name": "",
+    "care": {
+      "watering": "Suda yetişiyorsa suyu değiştirin; toprakta ise hafif nemli tutun.",
+      "sunlight": "Dolaylı ışık sever.",
+      "pruning": "Uç alma ile şekil verilebilir."
+    }
+  },
+  {
+  
+    "slug": "monstera-deliciosa",
+    "names": { "tr": ["Monstera", "Deve tabanı"], "en": "Monstera deliciosa" },
+    "Id": "3",
+    "image": "https://www.pexels.com/photo/potted-plant-growing-near-brown-wall-6297518/",
+    "scientific_name": "",
+    "care": {
+      "watering": "Toprağın üstü kuruyunca sulayın.",
+      "sunlight": "Parlak dolaylı ışık.",
+      "pruning": "Uzayan dalları kısaltın."
+    }
+  },
+  {
+    
+    "slug": "rose",
+    "names": { "tr": ["Gül"], "en": "Rose" },
+    "Id": "4",
+    "image": "https://www.pexels.com/photo/vibrant-orange-roses-in-a-garden-setting-34986353/",
+    "scientific_name": "",
+    "care": {
+      "watering": "Toprak kurudukça derin sulama.",
+      "sunlight": "5–6 saat direkt güneş.",
+      "pruning": "Solmuş gülleri kesin."
+    }
+  },
+  {
+    
+    "slug": "bonsai",
+    "names": { "tr": ["Bonsai"], "en": "Bonsai" },
+    "Id": "5",
+    "image": "https://www.pexels.com/photo/green-bonsai-tree-in-white-pot-2778192/",
+    "scientific_name": "",
+    "care": {
+      "watering": "Toprak hafif kuruyunca sulayın.",
+      "sunlight": "Parlak filtreli ışık.",
+      "pruning": "Düzenli şekil budaması gerekir."
+    }
+  },
+  {
+    
+    "slug": "spider-plant",
+    "names": { "tr": ["Kurdele çiçeği"], "en": "Spider Plant" },
+    "Id": "6",
+    "image": "https://www.pexels.com/photo/crop-woman-showing-potted-plant-with-green-leaves-at-home-4457654/",
+    "scientific_name": "",
+    "care": {
+      "watering": "Toprak hafif kuruyunca sulayın.",
+      "sunlight": "Dolaylı parlak ışık.",
+      "pruning": "Yavruları ayırabilir veya kısaltabilirsiniz."
+    }
+  },
+  {
+    
+    "slug": "rubber-plant",
+    "names": { "tr": ["Kauçuk çiçeği"], "en": "Rubber Plant" },
+    "Id": "7",
+    "image": "https://www.pexels.com/photo/green-plant-on-brown-pot-8989427/",
+    "scientific_name": "",
+    "care": {
+      "watering": "Toprak kuruyunca sulama.",
+      "sunlight": "Parlak dolaylı ışık.",
+      "pruning": "Gerektikçe dalları kısaltın."
+    }
+  },
+  {
+    
+    "slug": "guzmania",
+    "names": { "tr": ["Guzmanya"], "en": "Guzmania" },
+    "Id": "8",
+    "image": "https://www.pexels.com/photo/red-guzmania-flowers-growing-in-pot-7336391/",
+    "scientific_name": "",
+    "care": {
+      "watering": "Rozetin içine az su; toprak hafif nemli.",
+      "sunlight": "Parlak dolaylı ışık.",
+      "pruning": "Solan çiçeği kes."
+    }
+  },
+  {
+    
+    "slug": "pachira",
+    "names": { "tr": ["Pachira", "Para ağacı"], "en": "Pachira aquatica" },
+    "Id": "9",
+    "image": "https://images.unsplash.com/photo-1632207691143-643e2a9a9361?w=1000&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8enolMjBwbGFudHxlbnwwfHwwfHx8MA%3D%3D",
+    "scientific_name": "",
+    "care": {
+      "watering": "Toprak kurudukça sulayın.",
+      "sunlight": "Parlak dolaylı ışık.",
+      "pruning": "Tepe uçlarını kısaltabilirsiniz."
+    }
+  },
+  {
+    
+    "slug": "zz-plant",
+    "names": { "tr": ["ZEZE çiçeği", "Zuzu çiçeği"], "en": "ZZ Plant" },
+    "Id": "10",
+    "image": "https://www.pexels.com/photo/green-leaf-plant-on-pot-824572/",
+    "scientific_name": "",
+    "care": {
+      "watering": "Toprak tamamen kuruyunca sulayın.",
+      "sunlight": "Az ışıkta yaşayabilir.",
+      "pruning": "Sararan sapları dipten alın."
+    }
+  },
+  {
+    
+    "slug": "kalanchoe",
+    "names": { "tr": ["Kalanchoe"], "en": "Kalanchoe" },
+    "Id": "11",
+    "image": "https://www.pexels.com/photo/vibrant-bouquet-of-red-and-yellow-kalanchoe-flowers-31292603/",
+    "scientific_name": "",
+    "care": {
+      "watering": "Toprak kurudukça sulayın.",
+      "sunlight": "Parlak ışık sever.",
+      "pruning": "Solmuş çiçekleri kesin."
+    }
+  },
+  {
+    
+    "slug": "alocasia",
+    "names": { "tr": ["Fil kulağı"], "en": "Alocasia" },
+    "Id": "12",
+    "image": "https://www.pexels.com/photo/close-up-shot-of-green-plants-on-brown-pots-9707251/",
+    "scientific_name": "",
+    "care": {
+      "watering": "Toprağı hafif nemli tutun.",
+      "sunlight": "Parlak dolaylı ışık.",
+      "pruning": "Sararan yaprakları dipten kes."
+    }
+  },
+  {
+    
+    "slug": "lily",
+    "names": { "tr": ["Zambak"], "en": "Lily" },
+    "Id": "13",
+    "image": "https://www.pexels.com/photo/pink-flowers-in-a-mug-7663981/",
+    "scientific_name": "",
+    "care": {
+      "watering": "Toprağı hafif nemli tutun.",
+      "sunlight": "Günde birkaç saat güneş yeterlidir.",
+      "pruning": "Solmuş çiçekleri koparın."
+    }
+  },
+  {
+    
+    "slug": "hydrangea",
+    "names": { "tr": ["Ortanca"], "en": "Hydrangea" },
+    "Id": "14",
+    "image": "https://www.pexels.com/photo/close-up-of-vibrant-blue-hydrangea-blooms-34976262/",
+    "scientific_name": "",
+    "care": {
+      "watering": "Su seven bitkidir; yazın sık sulayın.",
+      "sunlight": "Yarı gölge idealdir.",
+      "pruning": "Çiçeklenme sonrası dalları kısaltın."
+    }
+  },
+  {
+    
+    "slug": "chrysanthemum",
+    "names": { "tr": ["Kasımpatı"], "en": "Chrysanthemum" },
+    "Id": "15",
+    "image": "https://www.pexels.com/photo/vibrant-pink-chrysanthemums-in-bloom-34986361/",
+    "scientific_name": "",
+    "care": {
+      "watering": "Toprağı hafif nemli tut.",
+      "sunlight": "Aydınlık bir ortam sever.",
+      "pruning": "Tomurcuklanmadan önce uç alma yapılabilir."
+    }
+  },
+  {
+    
+    "slug": "poinsettia",
+    "names": { "tr": ["Atatürk çiçeği"], "en": "Poinsettia" },
+    "Id": "16",
+    "image": "https://www.pexels.com/photo/vibrant-poinsettia-plant-by-sunlit-window-29575902/",
+    "scientific_name": "",
+    "care": {
+      "watering": "Toprak üstü kuruyunca sulayın.",
+      "sunlight": "Parlak dolaylı ışık.",
+      "pruning": "İlkbaharda şekil budaması yapın."
+    }
+  },
+  {
+    
+    "slug": "primrose",
+    "names": { "tr": ["Çuha çiçeği"], "en": "Primrose" },
+    "Id": "17",
+    "image": "https://www.pexels.com/photo/potted-lush-primroses-growing-in-greenhouse-7141239/",
+    "scientific_name": "",
+    "care": {
+      "watering": "Toprağı hafif nemli tut.",
+      "sunlight": "Serin ve aydınlık ortam.",
+      "pruning": "Solmuş çiçekleri alın."
+    }
+  }
+
+
+]
