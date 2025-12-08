@@ -17,8 +17,8 @@ import random
 from email.message import EmailMessage
 
 # --- GMAIL AYARLARI (BURAYI KENDİ BİLGİLERİNLE DOLDUR) ---
-MY_EMAIL = "floraheal.destek@gmail.com"  
-MY_PASSWORD = "xxvw vodl himz rstb"    
+MY_EMAIL = "buraya kullandığımız email gelecek @gmail.com"  
+MY_PASSWORD = "buraya o şifre gelecek"    
 
 # --- VERİTABANI ---
 SQLALCHEMY_DATABASE_URL = "sqlite:///./test.db"
