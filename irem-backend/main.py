@@ -262,7 +262,7 @@ def register(user: UserCreate, background_tasks: BackgroundTasks, db: Session = 
     db.commit()
     
     # Mail Arka Planda
-    email_body = f"Merhaba FloraHeal doğrulama kodun {code} lütfen ekranda gördüğün 4 haneli boş yere bu kodu gir"
+    email_body = f"Merhaba FloraHeal doğrulama kodun {code} lütfen ekranda gördüğün 4 haneli boş yere bu kodu gir ve sende aramıza katıl.🥳"
     background_tasks.add_task(send_email_task, user.email, "FloraHeal Doğrulama Kodu", email_body)
     
     return {"msg": "Kod gönderiliyor...", "email": user.email}
@@ -280,7 +280,7 @@ def verify_email(data: VerifyEmail, background_tasks: BackgroundTasks, db: Sessi
         
         # Hoşgeldin Maili
         welcome_msg = f"Merhaba {user.username}, FloraHeal'a hoşgeldin! Artık bitkilerini ekleyebilir ve onlara daha iyi bakabilirsin. 🌱🌸"
-        background_tasks.add_task(send_email_task, user.email, "FloraHeal'a Hoşgeldin! 🌿", welcome_msg)
+        background_tasks.add_task(send_email_task, user.email, "FloraHeal'a Hoşgeldin! 🎉🌿", welcome_msg)
         
         return {"msg": "Doğrulandı."}
     
