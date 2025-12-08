@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FloraHeal Master Panel</title>
+    <style>
+        :root { --primary: #27ae60; --dark: #2c3e50; }
+        body { font-family: 'Segoe UI', sans-serif; background: #f4f7f6; margin: 20px; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); }
+        h1, h2 { color: var(--primary); text-align: center; }
+        input, textarea, select { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; }
+        button { width: 100%; padding: 12px; background: var(--primary); color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; margin-top: 10px; transition: 0.2s; }
+        button:hover { background: #219150; }
+        button.secondary { background: #34495e; }
+        button.danger { background: #c0392b; }
+        button.join { background: #e67e22; width: auto; padding: 5px 15px; font-size: 13px; }
+        button.calendar { background: #f39c12; } button.calendar:hover { background: #d35400; }
+        button.fert { background: #8e44ad; } button.fert:hover { background: #9b59b6; }
+        
+        .tabs { display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+        .tab-btn { background: #ecf0f1; color: #7f8c8d; flex: 1; }
+        .tab-btn.active { background: var(--primary); color: white; }
+        
+        .hidden { display: none !important; }
+        
+        .card { background: #f8f9fa; padding: 15px; margin-bottom: 10px; border-left: 5px solid var(--primary); border-radius: 4px; }
+        #logArea { background: #2d3436; color: #00cec9; padding: 15px; border-radius: 8px; margin-top: 20px; font-family: monospace; height: 150px; overflow-y: scroll; font-size: 13px; }
+        .log-error { color: #ff7675; font-weight: bold; }
+        
+        #verifyModal { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); display: none; justify-content: center; align-items: center; z-index: 999; }
+        #verifyModalBox { background: white; padding: 25px; width: 350px; border-radius: 12px; text-align: center; box-shadow: 0 5px 20px rgba(0,0,0,0.2); }
+        #verifyModalBox input { font-size: 22px; text-align: center; letter-spacing: 6px; }
+        .single-comment { font-size: 13px; color: #555; background: #fff; padding: 5px; margin-bottom: 5px; border-radius: 3px; border: 1px solid #eee; }
+    </style>
+</head>
+<body>
+
+<div id="verifyModal"><div id="verifyModalBox"><h2>📧 Kod Gir</h2><p><b id="verifyEmailText"></b> adresine gelen kod:</p><input type="text" id="popupVerifyInput" maxlength="4" placeholder="1234"><button onclick="popupVerify()">Doğrula</button><button onclick="closeVerifyModal()" class="secondary">Kapat</button></div></div>
+
+<div class="container">
+    <h1>🌱 FloraHeal Test Paneli</h1>
+
+    <div id="authContainer">
+        <div id="stepRegister"><h2>📝 Kayıt Ol</h2><input type="text" id="regUser" placeholder="Kullanıcı Adı"><input type="email" id="regEmail" placeholder="Email"><input type="password" id="regPass" placeholder="Şifre (Min 8 krktr)"><button onclick="register()">Kayıt Ol & Kod Al</button><p align="center">Hesabın var mı? <a href="#" onclick="showLogin()">Giriş Yap</a></p></div>
+        <div id="stepLogin" class="hidden"><h2>🔑 Giriş Yap</h2><input type="email" id="loginEmail" placeholder="Email"><input type="password" id="loginPass" placeholder="Şifre"><button onclick="login()">Giriş Yap</button><p align="center">Hesabın yok mu? <a href="#" onclick="showRegister()">Kayıt Ol</a></p></div>
+    </div>
+
+    <div id="appContainer" class="hidden">
+        <div style="display:flex; justify-content:space-between; align-items:center;"><span id="welcomeText"></span><button onclick="logout()" class="danger" style="width:auto;">Çıkış</button></div>
+        <div class="tabs">
+            <button class="tab-btn active" onclick="openTab('plants')">🌺 Bitkiler</button>
+            <button class="tab-btn" onclick="openTab('profile')">👤 Profil</button>
+            <button class="tab-btn" onclick="openTab('forum')">💬 Forum</button>
+        </div>
+
+        <div id="tab-plants">
+            <div class="card">
+                <h3>➕ Yeni Bitki Ekle</h3>
+                <input type="text" id="plantName" placeholder="Bitki İsmi">
+                <input type="text" id="plantSpecies" placeholder="Türü">
+                <div style="display: flex; gap: 10px;">
+                    <input type="number" id="waterFreq" placeholder="Sulama (Gün)" value="7">
+                    <input type="number" id="fertFreq" placeholder="Gübre (Gün)" value="30">
+                </div>
+                <label>Son Sulama:</label>
+                <input type="date" id="lastWatered">
+                <button onclick="addPlant()">Kaydet</button>
+            </div>
+            <button onclick="checkReminders()" class="danger">🔔 Hatırlatıcı Kontrol</button>
+            <div style="margin-top:20px; border-top: 2px solid #eee; padding-top:10px;">
+                <h3 style="display:inline-block;">📋 Bitkilerim</h3>
+                <button onclick="loadPlants()" class="secondary" style="width:auto; float:right; margin-top:0;">🔄 Yenile</button>
+                <div style="clear:both;"></div>
+                <div id="plantList" style="margin-top:10px;"></div>
+            </div>
+        </div>
+
+        <div id="tab-profile" class="hidden">
+            <div class="card"><h3>Profil</h3><div id="profileView">...</div><img id="profileImg" src="" style="max-width:150px; display:none;"></div>
+            <h3>Güncelle</h3><input type="text" id="pName" placeholder="Ad Soyad"><input type="text" id="pBio" placeholder="Bio"><input type="text" id="pLoc" placeholder="Konum"><button onclick="updateProfile()">Kaydet</button>
+            <input type="file" id="pFile"><button onclick="uploadImage()" class="secondary">Foto Yükle</button>
+            <hr><button onclick="deleteAccount()" class="danger">🗑️ Sil</button>
+        </div>
+
+        <div id="tab-forum" class="hidden">
+            <div class="card"><h3>📝 Paylaş</h3><input type="text" id="postTitle" placeholder="Başlık"><textarea id="postContent" rows="3"></textarea><button onclick="createPost()">Gönder</button></div>
+            <button onclick="loadPosts()" class="secondary">Yenile</button><div id="postList"></div>
+        </div>
+    </div>
+    <div id="logArea">Sistem Hazır...</div>
+</div>
+
+<script>
+    const API_URL = "http://127.0.0.1:8000";
+    let token = localStorage.getItem("token") || "", verifyEmailGlobal = localStorage.getItem("pendingEmail") || "";
+
+    window.addEventListener("load", () => { if (token) showApp(); else if (verifyEmailGlobal) openVerifyModal(verifyEmailGlobal); else showRegister(); });
+
+    function log(msg, type="info") {
+        const area = document.getElementById("logArea");
+        const color = type === 'error' ? '#ff7675' : '#55efc4';
+        area.innerHTML = `<span style="color:${color}">[${new Date().toLocaleTimeString()}] ${msg}</span><br>` + area.innerHTML;
+    }
+
+    function showRegister() { document.getElementById('stepLogin').classList.add('hidden'); document.getElementById('stepRegister').classList.remove('hidden'); }
+    function showLogin() { document.getElementById('stepRegister').classList.add('hidden'); document.getElementById('stepLogin').classList.remove('hidden'); }
+    function showApp() { document.getElementById('authContainer').classList.add('hidden'); document.getElementById('appContainer').classList.remove('hidden'); document.getElementById('welcomeText').innerText="Panel"; loadPlants(); }
+    function openTab(name) {
+        ['plants','profile','forum'].forEach(t => document.getElementById('tab-'+t).classList.add('hidden'));
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById('tab-'+name).classList.remove('hidden');
+        event.target.classList.add('active');
+        if(name==='plants') loadPlants(); if(name==='profile') loadProfile(); if(name==='forum') loadPosts();
+    }
+    function openVerifyModal(e) { verifyEmailGlobal=e; localStorage.setItem("pendingEmail",e); document.getElementById("verifyEmailText").innerText=e; document.getElementById("verifyModal").style.display="flex"; }
+    function closeVerifyModal() { document.getElementById("verifyModal").style.display="none"; }
+
+    async function register() {
+        const u=document.getElementById('regUser').value, e=document.getElementById('regEmail').value, p=document.getElementById('regPass').value;
+        log("Kayıt olunuyor...");
+        try { const res = await fetch(`${API_URL}/register`, { method: "POST", headers: {"Content-Type":"application/json"}, body: JSON.stringify({username: u, email: e, password: p}) });
+        const data = await res.json();
+        if(res.ok) { log("✅ Kod gönderildi!"); openVerifyModal(e); } else log("❌ "+JSON.stringify(data.detail),"error"); } catch(e) { log(e,"error"); }
+    }
+    async function popupVerify() {
+        const c=document.getElementById("popupVerifyInput").value;
+        const res = await fetch(`${API_URL}/verify-email`, { method: "POST", headers: {"Content-Type":"application/json"}, body: JSON.stringify({email: verifyEmailGlobal, code: c}) });
+        const data = await res.json();
+        if(res.ok) { log("✅ Doğrulandı!"); localStorage.removeItem("pendingEmail"); closeVerifyModal(); showLogin(); document.getElementById('loginEmail').value=verifyEmailGlobal; } else log("❌ "+data.detail,"error");
+    }
+    async function login() {
+        const e=document.getElementById('loginEmail').value, p=document.getElementById('loginPass').value;
+        const form=new URLSearchParams(); form.append("username",e); form.append("password",p);
+        const res=await fetch(`${API_URL}/token`, {method:"POST", headers:{"Content-Type":"application/x-www-form-urlencoded"}, body:form});
+        const data=await res.json();
+        if(res.ok) { token=data.access_token; localStorage.setItem("token",token); log("✅ Giriş Başarılı!"); showApp(); } else log("❌ "+JSON.stringify(data.detail),"error");
+    }
+    function logout() { localStorage.removeItem("token"); location.reload(); }
+
+    // --- BİTKİLERİ YÜKLEME (GÜÇLENDİRİLDİ) ---
+    async function addPlant() {
+        const raw = document.getElementById('lastWatered').value;
+        if(!raw) return alert("Lütfen tarih seçin!");
+        
+        const body = { 
+            name: document.getElementById('plantName').value, 
+            species: document.getElementById('plantSpecies').value, 
+            watering_frequency: parseInt(document.getElementById('waterFreq').value), 
+            fertilizing_frequency: parseInt(document.getElementById('fertFreq').value||30), 
+            last_watered_date: raw.split("-").reverse().join(".") 
+        };
+        
+        log("Bitki kaydediliyor...");
+        const res = await fetch(`${API_URL}/my-plants`, { method: "POST", headers: {"Content-Type":"application/json", "Authorization": `Bearer ${token}`}, body: JSON.stringify(body) });
+        
+        if(res.ok) { 
+            log("🌱 Bitki Başarıyla Eklendi!"); 
+            // Formu temizle
+            document.getElementById('plantName').value = "";
+            document.getElementById('plantSpecies').value = "";
+            // Listeyi anında yenile
+            loadPlants(); 
+        } else { 
+            const d=await res.json(); log("Hata: "+JSON.stringify(d.detail),"error"); 
+        }
+    }
+    
+    function createCalendarLink(name, lastWateredStr, freq) {
+        let lastDate = new Date(lastWateredStr);
+        let nextDate = new Date(lastDate); nextDate.setDate(lastDate.getDate() + freq);
+        let googleDate = nextDate.toISOString().replace(/-|:|\.\d\d\d/g, "").slice(0, 15) + "Z";
+        let title = encodeURIComponent(`${name} Sulama Zamanı`);
+        return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${googleDate}/${googleDate}`;
+    }
+
+    async function loadPlants() {
+        log("Bitki listesi çekiliyor...");
+        const res = await fetch(`${API_URL}/my-plants`, { headers: {"Authorization": `Bearer ${token}`} });
+        const data = await res.json();
+        
+        if (data.length === 0) {
+            document.getElementById('plantList').innerHTML = "<p style='color:#777; text-align:center;'>Henüz bitkin yok.</p>";
+        } else {
+            document.getElementById('plantList').innerHTML = data.map(p => {
+                let calLink = createCalendarLink(p.name, p.last_watered, p.watering_frequency);
+                return `
+                <div class="card">
+                    <b>${p.name}</b> (${p.species}) <br> 
+                    💧 Su: ${p.watering_frequency} gün | 🧪 Gübre: ${p.fertilizing_frequency} gün <br>
+                    <div style="margin-top:10px;">
+                        <button onclick="waterPlant(${p.id})" style="width:auto; padding:5px; margin-right:5px; background:#3498db;">💧 Sula</button>
+                        <button onclick="fertPlant(${p.id})" class="fert" style="width:auto; padding:5px; margin-right:5px;">🧪 Gübrele</button>
+                        <a href="${calLink}" target="_blank"><button class="calendar" style="width:auto; padding:5px;">📅 Takvim</button></a>
+                    </div>
+                </div>`;
+            }).join('');
+        }
+    }
+    
+    async function waterPlant(id) { await fetch(`${API_URL}/my-plants/${id}/water`, {method:"POST", headers:{"Authorization":"Bearer "+token}}); log("Bitki sulandı, tarih güncellendi."); loadPlants(); }
+    async function fertPlant(id) { await fetch(`${API_URL}/my-plants/${id}/fertilize`, {method:"POST", headers:{"Authorization":"Bearer "+token}}); log("Bitki gübrelendi, tarih güncellendi."); loadPlants(); }
+    async function checkReminders() { const r=await fetch(API_URL+"/check-reminders", {headers:{"Authorization":"Bearer "+token}}); const d=await r.json(); log("📬 "+JSON.stringify(d)); }
+    
+    async function loadProfile() { const r=await fetch(API_URL+"/profile/me", {headers:{"Authorization":"Bearer "+token}}); const d=await r.json(); if(r.ok) { document.getElementById('profileView').innerHTML=`<b>${d.full_name||d.username}</b><br>${d.bio||''}<br>📍${d.location||''}`; if(d.image_url) document.getElementById('profileImg').src=API_URL+"/"+d.image_url, document.getElementById('profileImg').style.display='block'; document.getElementById('pName').value=d.full_name||""; document.getElementById('pBio').value=d.bio||""; document.getElementById('pLoc').value=d.location||""; } }
+    async function updateProfile() { const body=JSON.stringify({ full_name:document.getElementById('pName').value, bio:document.getElementById('pBio').value, location:document.getElementById('pLoc').value }); let r=await fetch(API_URL+"/profile", {method:"POST", headers:{"Content-Type":"application/json", "Authorization":"Bearer "+token}, body}); if(!r.ok) r=await fetch(API_URL+"/profile/me", {method:"PUT", headers:{"Content-Type":"application/json", "Authorization":"Bearer "+token}, body}); log("Profil güncellendi"); loadProfile(); }
+    async function uploadImage() { const f=document.getElementById('pFile'); if(!f.files[0]) return; const fd=new FormData(); fd.append("file", f.files[0]); await fetch(API_URL+"/profile/upload-image", {method:"POST", headers:{"Authorization":"Bearer "+token}, body:fd}); log("Foto yüklendi"); loadProfile(); }
+    async function deleteAccount() { if(confirm("Emin misin?")) { await fetch(API_URL+"/profile/me", {method:"DELETE", headers:{"Authorization":"Bearer "+token}}); alert("Silindi"); logout(); } }
+    async function createPost() { await fetch(API_URL+"/posts", {method:"POST", headers:{"Content-Type":"application/json", "Authorization":"Bearer "+token}, body:JSON.stringify({title:document.getElementById('postTitle').value, content:document.getElementById('postContent').value})}); log("Paylaşıldı"); loadPosts(); }
+    async function loadPosts() { const r=await fetch(API_URL+"/posts", {headers:{"Authorization":"Bearer "+token}}); const d=await r.json(); document.getElementById('postList').innerHTML=d.map(p => { let cHtml=p.comments.map(c=>`<div class="single-comment">💬 ${c.content}</div>`).join(''); return `<div class="card"><b>${p.title}</b> <button class="join" onclick="joinPost(${p.id})" style="float:right; padding:2px;">🤝 ${p.join_count}</button><br>${p.content}<div style="margin-top:5px; border-top:1px solid #ddd;">${cHtml}<div style="display:flex; gap:5px; margin-top:5px;"><input type="text" id="comment-${p.id}" placeholder="Yorum..." style="margin:0;"><button onclick="addComment(${p.id})" style="width:auto; margin:0;">Yolla</button></div></div></div>`; }).join(''); }
+    async function joinPost(id) { await fetch(API_URL+`/posts/${id}/join`, {method:"POST", headers:{"Authorization":"Bearer "+token}}); loadPosts(); }
+    async function addComment(id) { const t=document.getElementById(`comment-${id}`).value; await fetch(API_URL+`/posts/${id}/comments`, {method:"POST", headers:{"Content-Type":"application/json", "Authorization":"Bearer "+token}, body:JSON.stringify({content:t})}); loadPosts(); }
+</script>
+</body>
+</html>

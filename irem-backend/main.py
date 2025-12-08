@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Depends, HTTPException, status, UploadFile, File
+from fastapi import FastAPI, Depends, HTTPException, status, UploadFile, File, BackgroundTasks
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
@@ -16,9 +16,9 @@ import smtplib
 import random
 from email.message import EmailMessage
 
-# --- GMAIL AYARLARI  ---
+# --- GMAIL AYARLARI (BURAYI KENDİ BİLGİLERİNLE DOLDUR) ---
 MY_EMAIL = "floraheal.destek@gmail.com"  
-MY_PASSWORD = "burada şifre olacak bana haber verin yüklediğinizde yazalım."
+MY_PASSWORD = "xxvw vodl himz rstb"    
 
 # --- VERİTABANI ---
 SQLALCHEMY_DATABASE_URL = "sqlite:///./test.db"
@@ -80,7 +80,7 @@ class Plant(Base):
     watering_frequency = Column(Integer)
     fertilizing_frequency = Column(Integer)
     last_watered = Column(DateTime)
-    last_fertilized = Column(DateTime) # Gübreleme tarihi
+    last_fertilized = Column(DateTime)
     image_url = Column(String, nullable=True)
     user_id = Column(Integer, ForeignKey("users.id"))
     owner = relationship("User", back_populates="plants")
@@ -170,7 +170,6 @@ class PlantResponse(BaseModel):
     name: str
     species: str
     watering_frequency: int
-    fertilizing_frequency: int
     last_watered: datetime
     last_fertilized: Optional[datetime] = None
     image_url: Optional[str] = None
@@ -200,22 +199,27 @@ def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(
         raise HTTPException(status_code=401, detail="Geçersiz token")
     return user
 
-def send_email_generic(to_email: str, subject: str, body: str):
+def send_email_task(to_email: str, subject: str, body: str):
+    """Bu fonksiyon arka planda çalışır, ekranı dondurmaz."""
     if "xxxx" in MY_PASSWORD:
-        return False
+        print("❌ HATA: Şifre girilmemiş!")
+        return
+    
     msg = EmailMessage()
     msg.set_content(body)
     msg['Subject'] = subject
     msg['From'] = MY_EMAIL
     msg['To'] = to_email
+    
     try:
-        server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
+        server = smtplib.SMTP('smtp.gmail.com', 587, timeout=15)
+        server.starttls()
         server.login(MY_EMAIL, MY_PASSWORD)
         server.send_message(msg)
         server.quit()
-        return True
-    except:
-        return False
+        print(f"✅ Mail gönderildi: {to_email}")
+    except Exception as e:
+        print(f"❌ Mail Hatası: {e}")
 
 # --- UYGULAMA ---
 app = FastAPI()
@@ -234,7 +238,7 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 # --- ENDPOINTLER ---
 
 @app.post("/register")
-def register(user: UserCreate, db: Session = Depends(get_db)):
+def register(user: UserCreate, background_tasks: BackgroundTasks, db: Session = Depends(get_db)):
     if db.query(User).filter(User.username == user.username).first():
         raise HTTPException(status_code=400, detail="Kullanıcı adı alınmış.")
     if db.query(User).filter(User.email == user.email).first():
@@ -252,21 +256,19 @@ def register(user: UserCreate, db: Session = Depends(get_db)):
     db.commit()
     db.refresh(new_user)
     
-    # 1. Otomatik Profil Oluştur (Boş olarak)
+    # Otomatik Profil Oluştur
     new_profile = Profile(full_name=user.username, user_id=new_user.id)
     db.add(new_profile)
     db.commit()
     
-    # 2. Kod Maili
-    send_email_generic(
-        user.email, 
-        "FloraHeal Doğrulama Kodu", 
-        f"Merhaba FloraHeal doğrulama kodun {code} lütfen ekranda gördüğün 4 haneli boş yere bu kodu gir"
-    )
-    return {"msg": "Kod mail atıldı", "email": user.email}
+    # Mail Arka Planda
+    email_body = f"Merhaba FloraHeal doğrulama kodun {code} lütfen ekranda gördüğün 4 haneli boş yere bu kodu gir"
+    background_tasks.add_task(send_email_task, user.email, "FloraHeal Doğrulama Kodu", email_body)
+    
+    return {"msg": "Kod gönderiliyor...", "email": user.email}
 
 @app.post("/verify-email")
-def verify_email(data: VerifyEmail, db: Session = Depends(get_db)):
+def verify_email(data: VerifyEmail, background_tasks: BackgroundTasks, db: Session = Depends(get_db)):
     user = db.query(User).filter(User.email == data.email).first()
     if not user:
         raise HTTPException(status_code=404, detail="Kullanıcı yok")
@@ -276,19 +278,16 @@ def verify_email(data: VerifyEmail, db: Session = Depends(get_db)):
         user.verification_code = None
         db.commit()
         
-        # 3. Hoşgeldin Maili (Senin İstediğin Mesaj + Emojiler)
-        send_email_generic(
-            user.email, 
-            "FloraHeal'a Hoşgeldin! 🌿", 
-            f"Merhaba {user.username}, FloraHeal'a hoşgeldin! Artık bitkilerini ekleyebilir ve onlara daha iyi bakabilirsin. 🌱🌸"
-        )
-        return {"msg": "Hesap doğrulandı."}
+        # Hoşgeldin Maili
+        welcome_msg = f"Merhaba {user.username}, FloraHeal'a hoşgeldin! Artık bitkilerini ekleyebilir ve onlara daha iyi bakabilirsin. 🌱🌸"
+        background_tasks.add_task(send_email_task, user.email, "FloraHeal'a Hoşgeldin! 🌿", welcome_msg)
+        
+        return {"msg": "Doğrulandı."}
     
     raise HTTPException(400, "Kod yanlış.")
 
 @app.post("/token")
 def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
-    # Email ile giriş kontrolü
     user = db.query(User).filter(User.email == form_data.username).first()
     if not user or not verify_password(form_data.password, user.password_hash):
         raise HTTPException(status_code=400, detail="Hatalı giriş")
@@ -315,7 +314,6 @@ def create_profile(p: ProfileBase, u: User = Depends(get_current_user), db: Sess
 
 @app.get("/profile/me", response_model=ProfileResponse)
 def get_my_profile(u: User = Depends(get_current_user)):
-    # Profil yoksa otomatik oluşturup dön
     if not u.profile:
         np = Profile(full_name=u.username, user_id=u.id)
         db.add(np)
@@ -378,7 +376,6 @@ def create_comment(pid: int, c: CommentCreate, u: User = Depends(get_current_use
 @app.post("/my-plants", response_model=PlantResponse)
 def add_plant(p: PlantCreate, u: User = Depends(get_current_user), db: Session = Depends(get_db)):
     d = datetime.strptime(p.last_watered_date, '%d.%m.%Y')
-    # İlk başta gübreleme tarihini de aynı gün kabul ediyoruz
     np = Plant(
         name=p.name,
         species=p.species,
@@ -399,32 +396,36 @@ def get_my_plants(u: User = Depends(get_current_user)):
 
 @app.post("/my-plants/{pid}/water")
 def water_plant(pid: int, u: User = Depends(get_current_user), db: Session = Depends(get_db)):
-    p = db.query(Plant).filter(Plant.id==pid, Plant.user_id==u.id).first()
+    p = db.query(Plant).filter(Plant.id == pid, Plant.user_id == u.id).first()
     if not p:
         raise HTTPException(404, "Bitki yok")
     p.last_watered = datetime.utcnow()
     db.commit()
     return {"msg": "Sulandı"}
 
+@app.post("/my-plants/{pid}/fertilize")
+def fertilize_plant(pid: int, u: User = Depends(get_current_user), db: Session = Depends(get_db)):
+    p = db.query(Plant).filter(Plant.id == pid, Plant.user_id == u.id).first()
+    if not p:
+        raise HTTPException(404, "Bitki yok")
+    p.last_fertilized = datetime.utcnow()
+    db.commit()
+    return {"msg": "Gübrelendi"}
+
 @app.get("/check-reminders")
-def check_reminders(db: Session = Depends(get_db)):
+def check_reminders(background_tasks: BackgroundTasks, db: Session = Depends(get_db)):
     reminders = []
     now = datetime.utcnow()
-    
     for p in db.query(Plant).all():
-        # SULAMA KONTROLÜ
-        next_water = p.last_watered + timedelta(days=p.watering_frequency)
-        if now >= next_water:
-            msg_water = f"Merhaba {p.owner.username}, {p.name} oldukça susamış lütfen onu sulamayı unutma!🪴"
-            send_email_generic(p.owner.email, f"💧 {p.name} Susadı!", msg_water)
-            reminders.append(f"Su Maili: {p.name}")
-
-        # GÜBRELEME KONTROLÜ
+        if now >= p.last_watered + timedelta(days=p.watering_frequency):
+            msg = f"Merhaba {p.owner.username}, {p.name} oldukça susamış lütfen onu sulamayı unutma!🪴"
+            background_tasks.add_task(send_email_task, p.owner.email, f"💧 {p.name} Susadı!", msg)
+            reminders.append(f"Su: {p.name}")
+            
         last_fert = p.last_fertilized if p.last_fertilized else p.last_watered
-        next_fert = last_fert + timedelta(days=p.fertilizing_frequency)
-        if now >= next_fert:
-            msg_fert = f"Merhaba {p.owner.username}, {p.name} gübreye ihtiyacı var lütfen onu beslemeyi unutma!🪴"
-            send_email_generic(p.owner.email, f"🧪 {p.name} Besin Vakti!", msg_fert)
-            reminders.append(f"Gübre Maili: {p.name}")
+        if now >= last_fert + timedelta(days=p.fertilizing_frequency):
+            msg = f"Merhaba {p.owner.username}, {p.name} gübreye ihtiyacı var lütfen onu beslemeyi unutma!🪴"
+            background_tasks.add_task(send_email_task, p.owner.email, f"🧪 {p.name} Besin Vakti!", msg)
+            reminders.append(f"Gübre: {p.name}")
             
     return {"msg": "Kontrol edildi", "detay": reminders}
