@@ -1,7 +1,6 @@
 
 const mongoose = require("mongoose");
-
-// Günün key'ini (YYYY-MM-DD) oluşturan helper
+// Helper function to create a day key (YYYY-MM-DD)
 function toDayKey(d) {
   const x = new Date(d || Date.now());
   const y = x.getUTCFullYear();
@@ -10,38 +9,36 @@ function toDayKey(d) {
   return `${y}-${m}-${dd}`; // "2025-11-29"
 }
 
-// Tek bir gün için, tek bir bitkiye ait su + gübre kaydı
+// Water + fertilizer record for a single plant on a single day
 const entrySchema = new mongoose.Schema(
   {
-    // Bu kaydın sahibi olan kullanıcı
+    // The user who owns this record
     userId: { type: String, required: true, index: true },
 
-    // ⭐ HANGİ BİTKİYE AİT OLDUĞU
-    plantId: {
-  type: String,      // ObjectId yerine düz String tutuyoruz
+// WHICH PLANT IT BELONGS TO    
+  plantId: {
+  type: String,      // We are using a plain String instead of ObjectId
   required: true,
   index: true,
   },
-
-    // Su miktarı
+// Amount of water
     waterAmount: { type: Number, required: true, min: 0 },
-
-    // Gübre miktarı
+// Amount of fertilizer
     fertilizerAmount: { type: Number, required: true, min: 0 },
 
-    // Bu kaydın ait olduğu tarih
+    // The date this record belongs to
     date: { type: Date, default: Date.now },
 
-    // "2025-11-29" gibi string key (günlük tek kayıt kontrolü için)
+    // String key like "2025-11-29" (for single daily record control)
     dayKey: { type: String, index: true },
   },
   {
-    // createdAt ve updatedAt otomatik gelsin
+    // Automatically generate createdAt and updatedAt fields
     timestamps: true,
   }
 );
 
-// Kayıt validate edilmeden önce dayKey yoksa otomatik üret
+// Automatically generate dayKey before validation if it doesn't exist
 entrySchema.pre("validate", function (next) {
   if (!this.dayKey) {
     this.dayKey = toDayKey(this.date || Date.now());
@@ -49,8 +46,8 @@ entrySchema.pre("validate", function (next) {
   next();
 });
 
-// ⭐ Kullanıcı + bitki + gün benzersiz olsun
-// Yani aynı kullanıcı aynı bitki için bir günde sadece 1 kayıt girebilsin
+// Ensure the combination of User + Plant + Day is unique
+// This prevents the same user from entering more than 1 record for the same plant on the same day
 entrySchema.index(
   { userId: 1, plantId: 1, dayKey: 1 },
   { unique: true }
