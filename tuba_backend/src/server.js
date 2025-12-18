@@ -14,30 +14,30 @@ const cors = require("cors");
 // Model
 const Entry = require("./models/Entry");
 
-// Test endpointi
+// Test endpoint
 app.get("/", (req, res) => {
-  res.send("Backend çalışıyor 🚀");
+  res.send("Backend çalışıyor ");
 });
 
-// MongoDB bağlantısı (dbName istersen sabitliyoruz)
+// MongoDB connection (Fixing dbName if requested)
 mongoose
   .connect(process.env.MONGO_URI, { dbName: "floraheal" })
-  .then(() => console.log("✅ MongoDB bağlantısı başarılı"))
-  .catch((err) => console.error("❌ MongoDB bağlantı hatası:", err));
-  // Eğer bağlantı sonrası index’leri otomatik oluşturmak i
+  .then(() => console.log(" MongoDB bağlantısı başarılı"))
+  .catch((err) => console.error(" MongoDB bağlantı hatası:", err));
+  // To automatically create indexes after connection
 mongoose.set("strictQuery", true);
 
 // API
 
-// Su + gübre kaydı ekleme (POST)
-// Su + gübre kaydı ekleme (aynı güne tek kayıt olacak şekilde UPSERT)
-// Su + gübre kaydı ekleme (BITKİYE ÖZEL, günde 1 kayıt)
+// Add water + fertilizer record (POST)
+// Add water + fertilizer record (UPSERT: ensuring only one record per day)
+// Add water + fertilizer record (PLANT SPECIFIC, 1 record per day)
 app.post("/api/entries", async (req, res) => {
   try {
-    // ⭐ plantId'yi de body'den alıyoruz
+    // Get plantId from the request body
     const { userId, plantId, waterAmount, fertilizerAmount, date } = req.body;
 
-    // Zorunlu alan kontrolleri
+    // Required field validation
     if (!userId || !plantId || waterAmount == null || fertilizerAmount == null) {
       return res
         .status(400)
@@ -46,11 +46,11 @@ app.post("/api/entries", async (req, res) => {
         });
     }
 
-    // Tarih yoksa bugünü kullan
+    // Use current date if no date is provided
     const d = date ? new Date(date) : new Date();
     const dayKey = d.toISOString().slice(0, 10); // YYYY-MM-DD
 
-    // ⭐ Aynı kullanıcı + aynı bitki + aynı gün varsa GÜNCELLE, yoksa OLUŞTUR
+    // UPDATE if User + Plant + Day exists, otherwise CREATE (UPSERT)
     const doc = await Entry.findOneAndUpdate(
       { userId, plantId, dayKey },
       {
@@ -70,7 +70,7 @@ app.post("/api/entries", async (req, res) => {
 
     res.status(201).json(doc);
   } catch (err) {
-    // Unique index çakışırsa (index: userId+plantId+dayKey)
+    // If a unique index collision occurs (index: userId+plantId+dayKey)
     if (err.code === 11000) {
       return res
         .status(409)
@@ -82,19 +82,20 @@ app.post("/api/entries", async (req, res) => {
   }
 });
 
-// Kullanıcının geçmiş verilerini alma (GET)
+// Fetch historical data for a user (GET)
 app.get("/api/entries/:userId", async (req, res) => {
   try {
     const { userId } = req.params;
-    const { from, to } = req.query; // opsiyonel tarih filtresi
+    const { from, to } = req.query; // Optional date filter
 
     const q = { userId };
+   // Apply date range filters if provided
     if (from || to) {
       q.date = {};
       if (from) q.date.$gte = new Date(from);
       if (to) q.date.$lte = new Date(to);
     }
-
+   // Sort by date in descending order (newest first)
     const list = await Entry.find(q).sort({ date: -1 });
     res.json(list);
   } catch (err) {
@@ -102,14 +103,14 @@ app.get("/api/entries/:userId", async (req, res) => {
     res.status(500).json({ error: "Server error" });
   }
 });
-// Bugünün kaydı (tek kayıt)
+// Get today's record (single record)
 app.get("/api/entries/:userId/today", async (req, res) => {
   const { userId } = req.params;
   const dayKey = new Date().toISOString().slice(0, 10);
   const doc = await Entry.findOne({ userId, dayKey });
   res.json(doc || null);
 });
-// Özet: son X gün toplamları (default 7)
+// Summary: Total amounts for the last X days (default 7)
 app.get("/api/entries/:userId/summary", async (req, res) => {
   try {
     const { userId } = req.params;
@@ -145,7 +146,7 @@ app.get("/api/entries/:userId/summary", async (req, res) => {
 });
 
 
-// Kayıt güncelle (PATCH)
+// Update a record (PATCH)
 app.patch("/api/entries/:id", async (req, res) => {
   try {
     const { id } = req.params;
@@ -164,7 +165,7 @@ app.patch("/api/entries/:id", async (req, res) => {
   }
 });
 
-// Kayıt sil (DELETE)
+// Delete a record (DELETE)
 app.delete("/api/entries/:id", async (req, res) => {
   try {
     const { id } = req.params;
